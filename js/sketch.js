@@ -48,6 +48,13 @@ function setup() {
     model.add(hidden);
     model.add(output);
 
+    const optimizer = tf.train.sgd(0.1);
+    
+    model.compile({
+        optimizer: optimizer,
+        loss: 'meanSquaredError'
+    });
+
 }
 
 function draw() {
