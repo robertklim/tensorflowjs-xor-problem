@@ -1,7 +1,7 @@
 let model;
 
 // visualization resolution
-let resolution = 20;
+let resolution = 50;
 let cols;
 let rows;
 
@@ -102,38 +102,43 @@ function draw() {
         let index = 0;
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
-                fill(y_values[index] * 255);
+                let bright = y_values[index] * 255;                
+                fill(bright);
                 noStroke();
                 rect(i * resolution, j * resolution, resolution, resolution);
+                fill(255 - bright);
+                noStroke();
+                textAlign(CENTER, CENTER);
+                text(nf(y_values[index], 1, 2), i * resolution + resolution / 2, j * resolution + resolution / 2);
                 index++;
             }
         }
     });
-    // noLoop();
+    noLoop();
 
     // labels
     l = '[0, 0]';
     textSize(16);
     fill(255, 0, 0);
-    stroke(255);
-    text(l, 0, 16);
+    //stroke(255);
+    text(l, 32, 16);
 
     l = '[1, 0]';
     textSize(16);
     fill(255, 0, 0);
-    stroke(255);
+    //stroke(255);
     text(l, width - 36, 16);
 
     l = '[1, 1]';
     textSize(16);
     fill(255, 0, 0);
-    stroke(255);
-    text(l, width - 36, height - 8);
+    //stroke(255);
+    text(l, width - 36, height - 10);
 
     l = '[0, 1]';
     textSize(16);
     fill(255, 0, 0);
-    stroke(255);
-    text(l, 0, height - 8);
+    //stroke(255);
+    text(l, 32, height - 10);
 
 }
