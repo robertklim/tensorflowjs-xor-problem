@@ -13,24 +13,19 @@ let xs;
 // [1, 0] -> [1]
 // [0, 0] -> [0]
 // [1, 1] -> [0]
-let training_data = [
-    {
-        inputs: [0, 1],
-        targets: [1]
-    },
-    {
-        inputs: [1, 0],
-        targets: [1]
-    },
-    {
-        inputs: [0, 0],
-        targets: [0]
-    },
-    {
-        inputs: [1, 1],
-        targets: [0]
-    },
-];
+const train_xs = tf.tensor2d([
+    [0, 1],
+    [1, 0],
+    [0, 0],
+    [1, 1]
+]);
+
+const train_ys = tf.tensor2d([
+    [1],
+    [1],
+    [0],
+    [0]
+]);
 
 function setup() {
     createCanvas(400, 400);
@@ -83,6 +78,9 @@ function setup() {
 
 function draw() {
     background(0);
+
+    // training
+    // model.fit(train_xs, train_ys);
 
     // get predictions
     let ys = model.predict(xs).dataSync();
