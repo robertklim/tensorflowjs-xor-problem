@@ -67,7 +67,7 @@ function setup() {
     model.add(hidden);
     model.add(output);
 
-    const optimizer = tf.train.sgd(0.1);
+    const optimizer = tf.train.sgd(0.5);
     
     model.compile({
         optimizer: optimizer,
@@ -76,11 +76,17 @@ function setup() {
 
 }
 
+async function trainModel() {
+    return await model.fit(train_xs, train_ys, {
+        shuffle: true
+    });
+}
+
 function draw() {
     background(0);
 
     // training
-    // model.fit(train_xs, train_ys);
+    trainModel().then(result => console.log(result.history.loss[0]));
 
     // get predictions
     let ys = model.predict(xs).dataSync();
