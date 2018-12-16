@@ -1,5 +1,13 @@
 let model;
 
+// visualization resolution
+let resolution = 20;
+let cols;
+let rows;
+
+// model inputs
+let xs;
+
 // data for XOR
 // [0, 1] -> [1]
 // [1, 0] -> [1]
@@ -26,6 +34,22 @@ let training_data = [
 
 function setup() {
     createCanvas(400, 400);
+
+    // visualization variables
+    cols = width / resolution;
+    rows = height / resolution;
+
+    // create the input data
+    let inputs = [];
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            let x1 = i / cols;
+            let x2 = j / rows;
+            inputs.push([x1, x2]);
+        }
+    }
+    // create model inputs
+    xs = tf.tensor2d(inputs);
 
     // define tf model:
     // 2 inputs
@@ -60,23 +84,7 @@ function setup() {
 function draw() {
     background(0);
 
-    // visualization
-    let resolution = 20;
-    let cols = width / resolution;
-    let rows = height / resolution;
-    
-    // create the input data
-    let inputs = [];
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            let x1 = i / cols;
-            let x2 = j / rows;
-            inputs.push([x1, x2]);
-        }
-    }
-
     // get predictions
-    let xs = tf.tensor2d(inputs);
     let ys = model.predict(xs).dataSync();
     
     // draw
