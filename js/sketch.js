@@ -1,7 +1,7 @@
 let model;
 
 // visualization resolution
-let resolution = 50;
+let resolution = 20;
 let cols;
 let rows;
 
@@ -55,7 +55,7 @@ function setup() {
     
     let hidden = tf.layers.dense({
         inputShape: [2],
-        units: 2,
+        units: 8,
         activation: 'sigmoid'
     });
     
@@ -67,18 +67,28 @@ function setup() {
     model.add(hidden);
     model.add(output);
 
-    const optimizer = tf.train.sgd(0.5);
+    const optimizer = tf.train.sgd(0.7);
     
     model.compile({
         optimizer: optimizer,
         loss: 'meanSquaredError'
     });
 
+    setTimeout(train, 100);
+
 }
 
-async function trainModel() {
-    return await model.fit(train_xs, train_ys, {
-        shuffle: true
+function train() {
+    trainModel().then(result => {
+        console.log(result.history.loss[0]);
+        setTimeout(train, 10);
+    });
+}
+
+function trainModel() {
+    return model.fit(train_xs, train_ys, {
+        shuffle: true,
+        //epochs: 10
     });
 }
 
@@ -86,11 +96,9 @@ function draw() {
     background(0);
 
     // training
-    tf.tidy(() => {
-        trainModel().then(result => {
-            console.log(result.history.loss[0]);
-        });
-    });
+    // trainModel().then(result => {
+    //     console.log(result.history.loss[0]);
+    // });
     // noLoop();
 
     // get predictions
@@ -108,13 +116,14 @@ function draw() {
                 rect(i * resolution, j * resolution, resolution, resolution);
                 fill(255 - bright);
                 noStroke();
+                textSize(8);
                 textAlign(CENTER, CENTER);
                 text(nf(y_values[index], 1, 2), i * resolution + resolution / 2, j * resolution + resolution / 2);
                 index++;
             }
         }
     });
-    noLoop();
+    // noLoop();
 
     // labels
     l = '[0, 0]';
