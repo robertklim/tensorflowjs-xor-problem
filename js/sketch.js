@@ -61,24 +61,34 @@ function draw() {
     background(0);
 
     // visualization
-    let resolution = 50;
+    let resolution = 20;
     let cols = width / resolution;
     let rows = height / resolution;
+    
+    // create the input data
+    let inputs = [];
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             let x1 = i / cols;
             let x2 = j / rows;
-            let inputs = [
-                [x1, x2]
-            ];
-            let xs = tf.tensor2d(inputs);
-            let y = model.predict(xs).dataSync()[0];
-            fill(y * 255);
-            noStroke();
-            rect(i * resolution, j * resolution, resolution, resolution);
+            inputs.push([x1, x2]);
         }
     }
-    noLoop();
+
+    // get predictions
+    let xs = tf.tensor2d(inputs);
+    let ys = model.predict(xs).dataSync();
+    
+    // draw
+    let index = 0;
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            fill(ys[index] * 255);
+            noStroke();
+            rect(i * resolution, j * resolution, resolution, resolution);
+            index++;
+        }
+    }
 
     // labels
     l = '[0, 0]';
