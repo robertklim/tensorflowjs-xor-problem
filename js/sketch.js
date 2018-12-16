@@ -86,21 +86,30 @@ function draw() {
     background(0);
 
     // training
-    trainModel().then(result => console.log(result.history.loss[0]));
+    tf.tidy(() => {
+        trainModel().then(result => {
+            console.log(result.history.loss[0]);
+        });
+    });
+    // noLoop();
 
     // get predictions
-    let ys = model.predict(xs).dataSync();
+    tf.tidy(() => {
+        let ys = model.predict(xs);
+        let y_values = ys.dataSync();
     
-    // draw
-    let index = 0;
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            fill(ys[index] * 255);
-            noStroke();
-            rect(i * resolution, j * resolution, resolution, resolution);
-            index++;
+        // draw
+        let index = 0;
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
+                fill(y_values[index] * 255);
+                noStroke();
+                rect(i * resolution, j * resolution, resolution, resolution);
+                index++;
+            }
         }
-    }
+    });
+    // noLoop();
 
     // labels
     l = '[0, 0]';
