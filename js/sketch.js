@@ -59,4 +59,45 @@ function setup() {
 
 function draw() {
     background(0);
+
+    // visualization
+    let resolution = 10;
+    let cols = width / resolution;
+    let rows = height / resolution;
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            let x1 = i / cols;
+            let x2 = j / rows;
+            let y = x1 * x2;
+            fill(y * 255);
+            noStroke();
+            rect(i * resolution, j * resolution, resolution, resolution);
+        }
+    }
+
+    // labels
+    l = '[0, 0]';
+    textSize(16);
+    fill(255, 0, 0);
+    stroke(255);
+    text(l, 0, 16);
+
+    l = '[1, 0]';
+    textSize(16);
+    fill(255, 0, 0);
+    stroke(255);
+    text(l, width - 36, 16);
+
+    l = '[1, 1]';
+    textSize(16);
+    fill(255, 0, 0);
+    stroke(255);
+    text(l, width - 36, height - 8);
+
+    l = '[0, 1]';
+    textSize(16);
+    fill(255, 0, 0);
+    stroke(255);
+    text(l, 0, height - 8);
+
 }
